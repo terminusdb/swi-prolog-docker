@@ -3,6 +3,7 @@ LABEL maintainer "Dave Curylo <dave@curylo.org>, Michael Hendricks <michael@ndri
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libarchive13 \
+    libtcmalloc-minimal4 \
     libgmp10 \
     libossp-uuid16 \
     libssl1.1 \
@@ -11,10 +12,11 @@ RUN apt-get update && \
     libedit2 \
     libncurses6 && \
     rm -rf /var/lib/apt/lists/*
+ENV LANG C.UTF-8
 RUN set -eux; \
-    SWIPL_VER=8.0.3; \
-    SWIPL_CHECKSUM=cee59c0a477c8166d722703f6e52f962028f3ac43a5f41240ecb45dbdbe2d6ae; \
-    BUILD_DEPS='make cmake gcc g++ wget git autoconf libarchive-dev libgmp-dev libossp-uuid-dev libpcre3-dev libreadline-dev libedit-dev libssl-dev zlib1g-dev libdb-dev'; \
+    SWIPL_VER=8.2.0; \
+    SWIPL_CHECKSUM=d8c9f3adb9cd997a5fed7b5f5dbfe971d2defda969b9066ada158e4202c09c3c; \
+    BUILD_DEPS='make cmake gcc g++ ninja-build wget git autoconf libarchive-dev libgmp-dev libossp-uuid-dev libpcre3-dev libreadline-dev libedit-dev libssl-dev zlib1g-dev libdb-dev libgoogle-perftools-dev'; \
     apt-get update; apt-get install -y --no-install-recommends $BUILD_DEPS; rm -rf /var/lib/apt/lists/*; \
     mkdir /tmp/src; \
     cd /tmp/src; \
@@ -27,15 +29,15 @@ RUN set -eux; \
     cmake -DCMAKE_BUILD_TYPE=Release \
           -DSWIPL_PACKAGES_X=OFF \
 	  -DSWIPL_PACKAGES_JAVA=OFF \
-	  -DCMAKE_INSTALL_PREFIX=/usr \
+          -DCMAKE_INSTALL_PREFIX=/usr \
+          -G Ninja \
           ..; \
-    # LANG=C.UTF8 is a work-around for a 7.7.22 bug
-    LANG=C.UTF8 make; \
-    LANG=C.UTF8 make install; \
+    ../scripts/pgo-compile.sh; \
+    ninja; \
+    ninja install; \
     rm -rf /tmp/src; \
     mkdir -p /usr/lib/swipl/pack; \
     cd /usr/lib/swipl/pack; \
     dpkgArch="$(dpkg --print-architecture)"; \
     apt-get purge -y --auto-remove $BUILD_DEPS
-ENV LANG C.UTF-8
 CMD ["swipl"]
