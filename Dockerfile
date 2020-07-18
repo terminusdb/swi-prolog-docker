@@ -30,6 +30,8 @@ RUN set -eux; \
           -DSWIPL_PACKAGES_X=OFF \
 	  -DSWIPL_PACKAGES_JAVA=OFF \
           -DCMAKE_INSTALL_PREFIX=/usr \
+          -DINSTALL_DOCUMENTATION=OFF \
+          -DSWIPL_PACKAGES_ODBC=OFF \
           -G Ninja \
           ..; \
     ../scripts/pgo-compile.sh; \
@@ -39,5 +41,6 @@ RUN set -eux; \
     mkdir -p /usr/lib/swipl/pack; \
     cd /usr/lib/swipl/pack; \
     dpkgArch="$(dpkg --print-architecture)"; \
-    apt-get purge -y --auto-remove $BUILD_DEPS
+    apt-get purge -y --auto-remove $BUILD_DEPS;
+
 CMD ["swipl"]
