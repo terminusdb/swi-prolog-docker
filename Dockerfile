@@ -32,6 +32,7 @@ RUN set -eux; \
           -DCMAKE_INSTALL_PREFIX=/usr \
           -DINSTALL_DOCUMENTATION=OFF \
           -DSWIPL_PACKAGES_ODBC=OFF \
+          -DSWIPL_SHARED_LIB=OFF \
           -G Ninja \
           ..; \
     ../scripts/pgo-compile.sh; \
