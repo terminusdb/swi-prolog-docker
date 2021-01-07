@@ -14,8 +14,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 ENV LANG C.UTF-8
 RUN set -eux; \
-    SWIPL_VER=8.2.2; \
-    SWIPL_CHECKSUM=35ca864cfd257e3e59ebe8f01e186f8959a8b4d42f17a9a6c04ecdfa5d1e164b; \
+    SWIPL_VER=8.2.3; \
+    SWIPL_CHECKSUM=9403972f9d87f1f4971fbd4a5644b4976b1b18fc174be84506c6b713bd1f9c93; \
     BUILD_DEPS='make cmake gcc g++ ninja-build wget git autoconf libarchive-dev libgmp-dev libossp-uuid-dev libpcre3-dev libreadline-dev libedit-dev libssl-dev zlib1g-dev libgoogle-perftools-dev'; \
     apt-get update; apt-get install -y --no-install-recommends $BUILD_DEPS; rm -rf /var/lib/apt/lists/*; \
     mkdir /tmp/src; \
