@@ -26,7 +26,7 @@ RUN set -eux; \
     tar -xzf swipl-$SWIPL_VER.tar.gz; \
     mkdir swipl-$SWIPL_VER/build; \
     cd swipl-$SWIPL_VER/build; \
-    cmake -DCMAKE_BUILD_TYPE=Release \
+    cmake -DCMAKE_BUILD_TYPE=PGO \
           -DSWIPL_PACKAGES_X=OFF \
 	  -DSWIPL_PACKAGES_JAVA=OFF \
           -DCMAKE_INSTALL_PREFIX=/usr \
@@ -34,7 +34,6 @@ RUN set -eux; \
           -DSWIPL_PACKAGES_ODBC=OFF \
           -G Ninja \
           ..; \
-    ../scripts/pgo-compile.sh; \
     ninja; \
     ninja install; \
     rm -rf /tmp/src; \
