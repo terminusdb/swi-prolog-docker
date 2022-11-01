@@ -13,6 +13,7 @@ RUN apt-get update && \
     libncurses6 && \
     rm -rf /var/lib/apt/lists/*
 ENV LANG C.UTF-8
+COPY patches /tmp/patches
 RUN set -eux; \
     SWIPL_VER=8.4.3; \
     SWIPL_CHECKSUM=946119a0b5f5c8f410ea21fbf6281e917e61ef35ac0aabbdd24e787470d06faa; \
@@ -24,8 +25,10 @@ RUN set -eux; \
     echo "$SWIPL_CHECKSUM  swipl-$SWIPL_VER.tar.gz" >> swipl-$SWIPL_VER.tar.gz-CHECKSUM; \
     sha256sum -c swipl-$SWIPL_VER.tar.gz-CHECKSUM; \
     tar -xzf swipl-$SWIPL_VER.tar.gz; \
-    mkdir swipl-$SWIPL_VER/build; \
-    cd swipl-$SWIPL_VER/build; \
+    cd swipl-$SWIPL_VER; \
+    for PATCH in /tmp/patches/*; do git apply $PATCH; done; \
+    mkdir build; \
+    cd build; \
     cmake -DCMAKE_BUILD_TYPE=PGO \
           -DSWIPL_PACKAGES_X=OFF \
 	  -DSWIPL_PACKAGES_JAVA=OFF \
@@ -36,7 +39,7 @@ RUN set -eux; \
           ..; \
     ninja; \
     ninja install; \
-    rm -rf /tmp/src; \
+    rm -rf /tmp/src; rm -rf /tmp/patches; \
     mkdir -p /usr/lib/swipl/pack; \
     cd /usr/lib/swipl/pack; \
     dpkgArch="$(dpkg --print-architecture)"; \
