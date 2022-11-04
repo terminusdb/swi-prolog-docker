@@ -30,7 +30,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
       - name: Build image
-        run: docker buildx build . --file Dockerfile --tag $IMAGE_NAME
+        run: docker buildx build . --file Dockerfile --tag $IMAGE_NAME --platform linux/amd64,linux/arm64
 
       - name: Log into registry
         if: >
