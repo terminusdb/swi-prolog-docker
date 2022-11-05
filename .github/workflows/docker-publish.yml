@@ -59,7 +59,7 @@ jobs:
       - name: Build and push image image
         run: |
           if [ -z "${{ env.image_tag }}" ]; then
-              docker buildx build . --file Dockerfile --tag ${{ env.image_tag }} --platform linux/amd64,linux/arm64 --push
-          else
               docker buildx build . --file Dockerfile --tag $IMAGE_NAME --platform linux/amd64,linux/arm64
+          else
+              docker buildx build . --file Dockerfile --tag ${{ env.image_tag }} --platform linux/amd64,linux/arm64 --push
           fi
