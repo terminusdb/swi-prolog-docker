@@ -2,16 +2,8 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
-    branches:
-      - master
-
-    # Publish `v1.2.3` tags as releases.
-    tags:
-      - v*
 
 env:
-  # TODO: Change variable to your image's name.
   IMAGE_NAME: terminusdb/swipl
 
 jobs:
@@ -23,15 +15,33 @@ jobs:
     if: github.event_name == 'push'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Build image
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+        # Add support for more platforms with QEMU (optional)
+        # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64
 
       - name: Log into registry
+        if: >
+          github.event_name == 'push' && (
+            github.ref == 'refs/heads/master' ||
+            startsWith(github.ref, 'refs/tags/v')
+          )
         run:  echo '${{ secrets.DOCKER_PASS }}' | docker login -u terminusdb --password-stdin
 
-      - name: Push image
+      - name: Set image name
+        if: >
+          github.event_name == 'push' && (
+            github.ref == 'refs/heads/master' ||
+            startsWith(github.ref, 'refs/tags/v')
+          )
         run: |
           IMAGE_ID=$IMAGE_NAME
 
@@ -44,8 +54,12 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
+          echo "image_tag=${IMAGE_ID}:${VERSION}" >> $GITHUB_ENV
 
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+      - name: Build and push image image
+        run: |
+          if [ -z "${{ env.image_tag }}" ]; then
+              docker buildx build . --file Dockerfile --tag $IMAGE_NAME --platform linux/amd64,linux/arm64
+          else
+              docker buildx build . --file Dockerfile --tag ${{ env.image_tag }} --platform linux/amd64,linux/arm64 --push
+          fi
