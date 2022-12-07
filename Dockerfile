@@ -13,7 +13,7 @@ RUN apt-get update && \
     libncurses6 && \
     rm -rf /var/lib/apt/lists/*
 ENV LANG C.UTF-8
-COPY patches /tmp/patches
+#COPY patches /tmp/patches
 RUN set -eux; \
     SWIPL_VER=9.0.2; \
     SWIPL_CHECKSUM=33b5de34712d58f14c1e019bd1613df9a474f5e5fd024155a0f6e67ebb01c307; \
