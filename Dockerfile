@@ -9,6 +9,7 @@ RUN apt-get update && \
     libssl1.1 \
     ca-certificates \
     libpcre3 \
+    libpcre2-8-0 \
     libedit2 \
     libncurses6 && \
     rm -rf /var/lib/apt/lists/*
@@ -17,7 +18,7 @@ ENV LANG C.UTF-8
 RUN set -eux; \
     SWIPL_VER=9.0.2; \
     SWIPL_CHECKSUM=33b5de34712d58f14c1e019bd1613df9a474f5e5fd024155a0f6e67ebb01c307; \
-    BUILD_DEPS='make cmake gcc g++ ninja-build wget git autoconf libarchive-dev libgmp-dev libossp-uuid-dev libpcre3-dev libreadline-dev libedit-dev libssl-dev zlib1g-dev libgoogle-perftools-dev'; \
+    BUILD_DEPS='make cmake gcc g++ ninja-build wget git autoconf libarchive-dev libgmp-dev libossp-uuid-dev libpcre3-dev libreadline-dev libedit-dev libssl-dev zlib1g-dev libgoogle-perftools-dev libpcre2-dev'; \
     apt-get update; apt-get install -y --no-install-recommends $BUILD_DEPS; rm -rf /var/lib/apt/lists/*; \
     mkdir /tmp/src; \
     cd /tmp/src; \
