@@ -26,7 +26,7 @@ RUN set -eux; \
     sha256sum -c swipl-$SWIPL_VER.tar.gz-CHECKSUM; \
     tar -xzf swipl-$SWIPL_VER.tar.gz; \
     cd swipl-$SWIPL_VER; \
-    for PATCH in /tmp/patches/*; do git apply $PATCH; done; \
+#    for PATCH in /tmp/patches/*; do git apply $PATCH; done; \
     mkdir build; \
     cd build; \
     cmake -DCMAKE_BUILD_TYPE=PGO \
