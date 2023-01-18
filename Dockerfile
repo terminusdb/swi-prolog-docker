@@ -16,8 +16,8 @@ RUN apt-get update && \
 ENV LANG C.UTF-8
 #COPY patches /tmp/patches
 RUN set -eux; \
-    SWIPL_VER=9.0.2; \
-    SWIPL_CHECKSUM=33b5de34712d58f14c1e019bd1613df9a474f5e5fd024155a0f6e67ebb01c307; \
+    SWIPL_VER=9.0.3; \
+    SWIPL_CHECKSUM=e2919bc58710abd62b9cd40179a724c30bdbe9aa428af49d7fdc6d0158921afb; \
     BUILD_DEPS='make cmake gcc g++ ninja-build wget git autoconf libarchive-dev libgmp-dev libossp-uuid-dev libpcre3-dev libreadline-dev libedit-dev libssl-dev zlib1g-dev libgoogle-perftools-dev libpcre2-dev'; \
     apt-get update; apt-get install -y --no-install-recommends $BUILD_DEPS; rm -rf /var/lib/apt/lists/*; \
     mkdir /tmp/src; \
