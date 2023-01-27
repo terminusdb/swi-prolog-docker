@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM ubuntu:22.04
 LABEL maintainer "Dave Curylo <dave@curylo.org>, Michael Hendricks <michael@ndrix.org>"
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -6,7 +6,7 @@ RUN apt-get update && \
     libtcmalloc-minimal4 \
     libgmp10 \
     libossp-uuid16 \
-    libssl1.1 \
+    libssl3 \
     ca-certificates \
     libpcre3 \
     libpcre2-8-0 \
