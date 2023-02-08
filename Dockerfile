@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM debian:bullseye
 LABEL maintainer "Dave Curylo <dave@curylo.org>, Michael Hendricks <michael@ndrix.org>"
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -16,8 +16,8 @@ RUN apt-get update && \
 ENV LANG C.UTF-8
 #COPY patches /tmp/patches
 RUN set -eux; \
-    SWIPL_VER=9.0.3; \
-    SWIPL_CHECKSUM=e2919bc58710abd62b9cd40179a724c30bdbe9aa428af49d7fdc6d0158921afb; \
+    SWIPL_VER=9.0.4; \
+    SWIPL_CHECKSUM=feb2815a51d34fa81cb34e8149830405935a7e1d1c1950461239750baa8b49f0; \
     BUILD_DEPS='make cmake gcc g++ ninja-build wget git autoconf libarchive-dev libgmp-dev libossp-uuid-dev libpcre3-dev libreadline-dev libedit-dev libssl-dev zlib1g-dev libgoogle-perftools-dev libpcre2-dev'; \
     apt-get update; apt-get install -y --no-install-recommends $BUILD_DEPS; rm -rf /var/lib/apt/lists/*; \
     mkdir /tmp/src; \
