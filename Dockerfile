@@ -6,7 +6,7 @@ RUN apt-get update && \
     libtcmalloc-minimal4 \
     libgmp10 \
     libossp-uuid16 \
-    libssl3 \
+    libssl1.1 \
     ca-certificates \
     libpcre3 \
     libpcre2-8-0 \
