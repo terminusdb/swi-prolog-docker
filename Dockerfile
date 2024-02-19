@@ -1,5 +1,4 @@
-FROM debian:bullseye-slim
-LABEL maintainer "Dave Curylo <dave@curylo.org>, Michael Hendricks <michael@ndrix.org>"
+FROM debian:bookworm-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libarchive13 \
